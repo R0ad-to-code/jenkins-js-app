@@ -76,9 +76,7 @@ pipeline {
         }
         
         stage('Deploy to Production') {
-            when {
-                branch 'main'
-            }
+           
             steps {
                 echo 'Déploiement vers la production...'
                 sh '''
