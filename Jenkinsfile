@@ -65,14 +65,14 @@ pipeline {
             steps {
                 echo 'Déploiement vers la production avec Docker Compose...'
                 sh '''
-                    # Définir la variable d'environnement APP_NAME pour docker-compose
+                    # Définir la variable d'environnement APP_NAME pour docker compose
                     export APP_NAME=${APP_NAME}
                     
                     # Déployer avec Docker Compose
                     echo "Déploiement avec Docker Compose..."
-                    docker-compose down || true
-                    docker-compose build --no-cache
-                    docker-compose up -d
+                    docker compose down || true
+                    docker compose build --no-cache
+                    docker compose up -d
                     
                     # Vérifier que le conteneur est bien démarré
                     echo "Vérification du conteneur..."
