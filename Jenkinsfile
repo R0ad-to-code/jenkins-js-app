@@ -79,7 +79,6 @@ pipeline {
                     docker ps | grep ${APP_NAME}
                     
                     # Sauvegarder une copie des fichiers dans le DEPLOY_DIR pour référence
-                    echo "Sauvegarde des fichiers déployés..."
                     mkdir -p ${DEPLOY_DIR}
                     cp -r dist/* ${DEPLOY_DIR}/
                 '''

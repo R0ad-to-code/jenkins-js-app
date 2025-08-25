@@ -4,7 +4,7 @@ services:
   webapp:
     build:
       context: .
-      dockerfile: Dockerfile.app
+      dockerfile: Dockerfile
     image: ${APP_NAME}:latest
     container_name: ${APP_NAME}
     restart: unless-stopped
