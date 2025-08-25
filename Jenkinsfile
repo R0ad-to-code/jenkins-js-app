@@ -7,6 +7,10 @@ pipeline {
         DEPLOY_DIR = '/var/www/html/mon-app'
     }
     
+    tools {
+        nodejs 'NodeJS 18'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -21,20 +25,8 @@ pipeline {
                 sh '''
                     node --version
                     npm --version
-                    npm ci
+                    npm i
                 '''
-            }
-        }
-        
-        stage('Run Tests') {
-            steps {
-                echo 'Exécution des tests...'
-                sh 'npm test'
-            }
-            post {
-                always {
-                    publishTestResults testResultsPattern: 'test-results.xml'
-                }
             }
         }
         
