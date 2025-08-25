@@ -61,42 +61,18 @@ pipeline {
             }
         }
         
-        stage('Deploy to Production') {
-    steps {
-        echo 'Déploiement vers la production avec Docker...'
-        sh '''
-            # Créer un Dockerfile pour l'application
-            cat > Dockerfile.app <<EOF
-                FROM node:18-alpine
-
-                WORKDIR /src
-
-                # Copier les fichiers de build
-                COPY dist/ /src/
-                COPY package*.json /src/
-
-                # Installer un serveur léger pour servir l'application
-                RUN npm install --production
-
-                # Exposer le port
-                EXPOSE 3000
-
-                # Démarrer le serveur
-                CMD ["node", "server.js"]
-                EOF
-
-                    # Construire l'image Docker
-                    echo "Construction de l'image Docker..."
-                    docker build -t ${APP_NAME}:latest -f Dockerfile.app .
+       stage('Deploy to Production') {
+            steps {
+                echo 'Déploiement vers la production avec Docker Compose...'
+                sh '''
+                    # Définir la variable d'environnement APP_NAME pour docker-compose
+                    export APP_NAME=${APP_NAME}
                     
-                    # Arrêter et supprimer l'ancien conteneur s'il existe
-                    echo "Nettoyage des anciens conteneurs..."
-                    docker stop ${APP_NAME} || true
-                    docker rm ${APP_NAME} || true
-                    
-                    # Lancer le nouveau conteneur
-                    echo "Démarrage du nouveau conteneur..."
-                    docker run -d --name ${APP_NAME} -p 3000:3000 ${APP_NAME}:latest
+                    # Déployer avec Docker Compose
+                    echo "Déploiement avec Docker Compose..."
+                    docker-compose down || true
+                    docker-compose build --no-cache
+                    docker-compose up -d
                     
                     # Vérifier que le conteneur est bien démarré
                     echo "Vérification du conteneur..."
