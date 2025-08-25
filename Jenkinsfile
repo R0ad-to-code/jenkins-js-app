@@ -61,22 +61,7 @@ pipeline {
             }
         }
         
-        stage('Deploy to Staging') {
-            when {
-                branch 'develop'
-            }
-            steps {
-                echo 'Déploiement vers l\'environnement de staging...'
-                sh '''
-                    echo "Déploiement staging simulé"
-                    mkdir -p staging
-                    cp -r dist/* staging/
-                '''
-            }
-        }
-        
         stage('Deploy to Production') {
-           
             steps {
                 echo 'Déploiement vers la production...'
                 sh '''
@@ -91,6 +76,18 @@ pipeline {
                     
                     echo "Vérification du déploiement..."
                     ls -la ${DEPLOY_DIR}
+                '''
+            }
+        }
+
+        stage('Start Application') {
+            steps {
+                echo 'Démarrage de l\'application...'
+                sh '''
+                    cd ${DEPLOY_DIR}
+                    nohup node server.js > app.log 2>&1 &
+                    echo $! > app.pid
+                    echo "Application démarrée avec PID $(cat app.pid)"
                 '''
             }
         }
