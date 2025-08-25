@@ -62,32 +62,50 @@ pipeline {
         }
         
         stage('Deploy to Production') {
-            steps {
-                echo 'Déploiement vers la production...'
-                sh '''
-                    echo "Sauvegarde de la version précédente..."
-                    if [ -d "${DEPLOY_DIR}" ]; then
-                        cp -r ${DEPLOY_DIR} ${DEPLOY_DIR}_backup_$(date +%Y%m%d_%H%M%S)
-                    fi
+    steps {
+        echo 'Déploiement vers la production avec Docker...'
+        sh '''
+            # Créer un Dockerfile pour l'application
+            cat > Dockerfile.app <<EOF
+                FROM node:18-alpine
+
+                WORKDIR /src
+
+                # Copier les fichiers de build
+                COPY dist/ /src/
+                COPY package*.json /src/
+
+                # Installer un serveur léger pour servir l'application
+                RUN npm install --production
+
+                # Exposer le port
+                EXPOSE 3000
+
+                # Démarrer le serveur
+                CMD ["node", "server.js"]
+                EOF
+
+                    # Construire l'image Docker
+                    echo "Construction de l'image Docker..."
+                    docker build -t ${APP_NAME}:latest -f Dockerfile.app .
                     
-                    echo "Déploiement de la nouvelle version..."
+                    # Arrêter et supprimer l'ancien conteneur s'il existe
+                    echo "Nettoyage des anciens conteneurs..."
+                    docker stop ${APP_NAME} || true
+                    docker rm ${APP_NAME} || true
+                    
+                    # Lancer le nouveau conteneur
+                    echo "Démarrage du nouveau conteneur..."
+                    docker run -d --name ${APP_NAME} -p 3000:3000 ${APP_NAME}:latest
+                    
+                    # Vérifier que le conteneur est bien démarré
+                    echo "Vérification du conteneur..."
+                    docker ps | grep ${APP_NAME}
+                    
+                    # Sauvegarder une copie des fichiers dans le DEPLOY_DIR pour référence
+                    echo "Sauvegarde des fichiers déployés..."
                     mkdir -p ${DEPLOY_DIR}
                     cp -r dist/* ${DEPLOY_DIR}/
-                    
-                    echo "Vérification du déploiement..."
-                    ls -la ${DEPLOY_DIR}
-                '''
-            }
-        }
-
-        stage('Start Application') {
-            steps {
-                echo 'Démarrage de l\'application...'
-                sh '''
-                    cd ${DEPLOY_DIR}
-                    nohup node server.js > app.log 2>&1 &
-                    echo $! > app.pid
-                    echo "Application démarrée avec PID $(cat app.pid)"
                 '''
             }
         }
