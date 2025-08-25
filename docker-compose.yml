@@ -9,7 +9,7 @@ services:
     container_name: ${APP_NAME}
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "8888:8888"
     networks:
       - app-network
 

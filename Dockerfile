@@ -10,7 +10,7 @@ COPY package*.json /src/
 RUN npm install --production
 
 # Exposer le port
-EXPOSE 3000
+EXPOSE 8888
 
 # Démarrer le serveur
 CMD ["node", "server.js"]
