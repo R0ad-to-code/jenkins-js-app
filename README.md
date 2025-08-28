@@ -29,5 +29,7 @@ par practicité, je mets juste en place un pull SCM toutes les 5 minutes H/5 * *
 5. deployer sur 2 branches
 pour cela il faut créer un autre pipeline de format "multibranch"
 
+6. pour deployer, il faut donner le droit au dossier var/www/html/ à jenkins
+
 
 
