@@ -14,4 +14,4 @@ Pour avoir le mdp initial, j'ai du prendre le path proposé par Jenkins.
 
 3. création Pipeline Jenkins avec le git de mon projet avec trigger hook trigger for GITScm polling
 
-
+4. modification file Jenkins -> ajout tool NodeJS

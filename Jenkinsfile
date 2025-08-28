@@ -6,6 +6,9 @@ pipeline {
         APP_NAME = 'mon-app-js'
         DEPLOY_DIR = '/var/www/html/mon-app'
     }
+    tools {
+        nodejs "NodeJS"
+    }
     
     stages {
         stage('Checkout') {
