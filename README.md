@@ -46,4 +46,9 @@ Cela permet de mettre de condition, comme ici la branche sur laquelle a été pu
 
 Comment fonctionne la gestion des erreurs avec les blocs post?
 
-Ce sont des sections qui toujours executées permettant d'executer des actions après la fin du pipeline. C'est beaucoup utilisé pour du log 
+Ce sont des sections qui toujours executées permettant d'executer des actions après la fin du pipeline. C'est beaucoup utilisé pour du log.
+
+
+Quel est l'intérêt de faire un backup avant déploiement?
+
+Le but est de pouvoir revenir en arrière si le deploy fail et que le dossier a déj été mis à jour.
