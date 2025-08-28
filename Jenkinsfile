@@ -4,13 +4,9 @@ pipeline {
     environment {
         NODE_VERSION = '18'
         APP_NAME = 'mon-app-js'
-        DEPLOY_DIR = '/var/jenkins_home/deployed-apps'
+        DEPLOY_DIR = '/var/www/html/mon-app'
     }
     
-    tools {
-        nodejs 'NodeJS 18'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -25,8 +21,20 @@ pipeline {
                 sh '''
                     node --version
                     npm --version
-                    npm i
+                    npm ci
                 '''
+            }
+        }
+        
+        stage('Run Tests') {
+            steps {
+                echo 'Exécution des tests...'
+                sh 'npm test'
+            }
+            post {
+                always {
+                    publishTestResults testResultsPattern: 'test-results.xml'
+                }
             }
         }
         
@@ -61,26 +69,38 @@ pipeline {
             }
         }
         
-       stage('Deploy to Production') {
+        stage('Deploy to Staging') {
+            when {
+                branch 'develop'
+            }
             steps {
-                echo 'Déploiement vers la production avec Docker Compose...'
+                echo 'Déploiement vers l\'environnement de staging...'
                 sh '''
-                    # Définir la variable d'environnement APP_NAME pour docker compose
-                    export APP_NAME=${APP_NAME}
+                    echo "Déploiement staging simulé"
+                    mkdir -p staging
+                    cp -r dist/* staging/
+                '''
+            }
+        }
+        
+        stage('Deploy to Production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo 'Déploiement vers la production...'
+                sh '''
+                    echo "Sauvegarde de la version précédente..."
+                    if [ -d "${DEPLOY_DIR}" ]; then
+                        cp -r ${DEPLOY_DIR} ${DEPLOY_DIR}_backup_$(date +%Y%m%d_%H%M%S)
+                    fi
                     
-                    # Déployer avec Docker Compose
-                    echo "Déploiement avec Docker Compose..."
-                    docker compose down || true
-                    docker compose build --no-cache
-                    docker compose up -d
-                    
-                    # Vérifier que le conteneur est bien démarré
-                    echo "Vérification du conteneur..."
-                    docker ps | grep ${APP_NAME}
-                    
-                    # Sauvegarder une copie des fichiers dans le DEPLOY_DIR pour référence
+                    echo "Déploiement de la nouvelle version..."
                     mkdir -p ${DEPLOY_DIR}
                     cp -r dist/* ${DEPLOY_DIR}/
+                    
+                    echo "Vérification du déploiement..."
+                    ls -la ${DEPLOY_DIR}
                 '''
             }
         }
