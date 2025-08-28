@@ -33,3 +33,17 @@ pour cela il faut créer un autre pipeline de format "multibranch"
 
 
 
+# Partie 5 : Questions et Réflexions
+Quelle est la différence entre npm install et npm ci dans le contexte CI/CD?
+
+npm ci (clean install) reprend les dependances du package-lock.json. Dans du CI/CD, où l'on veut garantir la reproductibilité et cohérence du projet.
+
+
+Pourquoi utilise-t-on des conditions when dans certaines étapes?
+
+Cela permet de mettre de condition, comme ici la branche sur laquelle a été push
+
+
+Comment fonctionne la gestion des erreurs avec les blocs post?
+
+Ce sont des sections qui toujours executées permettant d'executer des actions après la fin du pipeline. C'est beaucoup utilisé pour du log 
