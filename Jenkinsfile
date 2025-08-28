@@ -97,7 +97,7 @@ pipeline {
                 echo 'Déploiement vers la production...'
                 sh '''
                     echo "Sauvegarde de la version précédente..."
-                    if [ -d "${DEPLOY_DIR}" ]; then
+                    if [ -d "${DEPLOY_DIR}_main" ]; then
                         cp -r ${DEPLOY_DIR}_main ${DEPLOY_DIR}_main_backup_$(date +%Y%m%d_%H%M%S)
                     fi
                     
