@@ -34,7 +34,6 @@ pipeline {
                 echo 'Exécution des tests...'
                 sh 'npm test'
             }
-            }
         }
         
         stage('Code Quality Check') {

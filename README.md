@@ -13,6 +13,13 @@ Pour avoir le mdp initial, j'ai du prendre le path proposé par Jenkins.
 2bis. ajouter le tool NodeJS dans les reglages tools
 
 3. création Pipeline Jenkins avec le git de mon projet avec trigger hook trigger for GITScm polling
+- installation GitHub Integration Plugin
+- GitHub Authentication
+
+- ajout credentials dans les secrets jenkins
+- ajout webhook sur github -> lors d'un projet en jenkins en local, il faut créer un tunnel sécurisé ou ouvrir un port avec l'adresse ip publique
+
+par practicité, je mets juste en place un pull SCM toutes les 5 minutes H/5 * * * *
 
 4. modification file Jenkins -> 
 - ajout tool NodeJS + 
