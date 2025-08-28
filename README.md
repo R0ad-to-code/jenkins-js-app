@@ -26,3 +26,8 @@ par practicité, je mets juste en place un pull SCM toutes les 5 minutes H/5 * *
 - correction npm ci -> npm i (npm ci nécéssite un package-lock.json)
 - effacer "publishTestResults"
 
+5. deployer sur 2 branches
+pour cela il faut créer un autre pipeline de format "multibranch"
+
+
+

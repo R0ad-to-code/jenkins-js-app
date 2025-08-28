@@ -32,4 +32,11 @@ describe('Tests de la calculatrice', () => {
         expect(isValidNumber(NaN)).toBe(false);
         expect(isValidNumber(Infinity)).toBe(false);
     });
+    test('expected to be false', () => {
+        expect(isValidNumber("string")).toBe(true);
+        expect(isValidNumber(null)).toBe(false);
+        expect(isValidNumber(undefined)).toBe(false);
+        expect(isValidNumber({})).toBe(false);
+        expect(isValidNumber([])).toBe(false);
+    });
 });
