@@ -90,12 +90,12 @@ pipeline {
                 sh '''
                     echo "Sauvegarde de la version précédente..."
                     if [ -d "${DEPLOY_DIR}" ]; then
-                        sudo cp -r ${DEPLOY_DIR} ${DEPLOY_DIR}_backup_$(date +%Y%m%d_%H%M%S)
+                        cp -r ${DEPLOY_DIR} ${DEPLOY_DIR}_backup_$(date +%Y%m%d_%H%M%S)
                     fi
                     
                     echo "Déploiement de la nouvelle version..."
-                    sudo mkdir -p ${DEPLOY_DIR}
-                    sudo cp -r dist/* ${DEPLOY_DIR}/
+                    mkdir -p ${DEPLOY_DIR}
+                    cp -r dist/* ${DEPLOY_DIR}/
                     
                     echo "Vérification du déploiement..."
                     ls -la ${DEPLOY_DIR}
