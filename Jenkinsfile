@@ -111,6 +111,7 @@ pipeline {
                         sh '''
                             echo "Test de connectivité..."
                             # Simulation d'un health check
+                            curl http://localhost:3000/health 
                             echo "Application déployée avec succès"
                         '''
                     } catch (Exception e) {
