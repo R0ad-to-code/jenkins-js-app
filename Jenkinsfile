@@ -72,11 +72,19 @@ pipeline {
                 branch 'develop'
             }
             steps {
-                echo 'Déploiement vers l\'environnement de staging...'
+                 echo 'Déploiement vers la production...'
                 sh '''
-                    echo "Déploiement staging simulé"
-                    mkdir -p staging
-                    cp -r dist/* staging/
+                    echo "Sauvegarde de la version précédente..."
+                    if [ -d "${DEPLOY_DIR}_staging" ]; then
+                        cp -r ${DEPLOY_DIR}_staging ${DEPLOY_DIR}_staging_backup_$(date +%Y%m%d_%H%M%S)
+                    fi
+                    
+                    echo "Déploiement de la nouvelle version..."
+                    mkdir -p ${DEPLOY_DIR}_staging
+                    cp -r dist/* ${DEPLOY_DIR}_staging/
+                    
+                    echo "Vérification du déploiement..."
+                    ls -la ${DEPLOY_DIR}_staging
                 '''
             }
         }
@@ -90,15 +98,15 @@ pipeline {
                 sh '''
                     echo "Sauvegarde de la version précédente..."
                     if [ -d "${DEPLOY_DIR}" ]; then
-                        cp -r ${DEPLOY_DIR} ${DEPLOY_DIR}_backup_$(date +%Y%m%d_%H%M%S)
+                        cp -r ${DEPLOY_DIR}_main ${DEPLOY_DIR}_main_backup_$(date +%Y%m%d_%H%M%S)
                     fi
                     
                     echo "Déploiement de la nouvelle version..."
-                    mkdir -p ${DEPLOY_DIR}
-                    cp -r dist/* ${DEPLOY_DIR}/
+                    mkdir -p ${DEPLOY_DIR}_main
+                    cp -r dist/* ${DEPLOY_DIR}_main/
                     
                     echo "Vérification du déploiement..."
-                    ls -la ${DEPLOY_DIR}
+                    ls -la ${DEPLOY_DIR}_main
                 '''
             }
         }
