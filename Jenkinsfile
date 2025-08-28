@@ -34,10 +34,6 @@ pipeline {
                 echo 'Exécution des tests...'
                 sh 'npm test'
             }
-            post {
-                always {
-                    publishTestResults testResultsPattern: 'test-results.xml'
-                }
             }
         }
         
