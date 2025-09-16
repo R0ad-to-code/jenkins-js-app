@@ -43,6 +43,9 @@ pipeline {
         }
         
         stage('Run Tests') {
+            when {
+                expression { return !params.SKIP_TESTS }
+            }
             steps {
                 echo 'Exécution des tests...'
                 sh 'npm test'
