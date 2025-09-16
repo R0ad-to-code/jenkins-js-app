@@ -9,3 +9,5 @@ Blue Ocean permet d'avoir une belle interface plus facilement navigable et plus 
 
 # Partie 3 : Configuration du plugin Discord 
 Pour mettre en place le plugin, il faut créer un webhook sur le channel discord. Celui-ci donne un lien que l'on peut reutiliser dans le jenkinsfile pour notifier.
+
+# Partie 4 : Configuration du plugin Github - webhook

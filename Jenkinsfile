@@ -1,6 +1,19 @@
 pipeline {
     agent any
+    parameters {
+        choice(
+            choices: ['dev', 'staging', 'prod'],
+            description: 'Environnement de déploiement',
+            name: 'ENVIRONMENT'
+        )
+        booleanParam(
+            defaultValue: false,
+            description: 'Ignorer les tests ?',
+            name: 'SKIP_TESTS'
+        )
+    }
     
+
     environment {
         NODE_VERSION = '18'
         APP_NAME = 'mon-app-js'
