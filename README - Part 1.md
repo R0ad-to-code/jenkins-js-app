@@ -5,6 +5,9 @@ Pour avoir le mdp initial, j'ai du prendre le path proposé par Jenkins.
 
 ![alt text](<Screenshot 2025-08-28 at 1.23.24 PM.png>)
 
+# demarrer \ eteindre jenkins 
+brew services start jenkins
+brew services stop jenkins
 
 # créer et configurer un pipeline Jenkins
 1. mettre en place le git avec application node.js et un fichier jenkins. 
@@ -30,6 +33,9 @@ par practicité, je mets juste en place un pull SCM toutes les 5 minutes H/5 * *
 pour cela il faut créer un autre pipeline de format "multibranch"
 
 6. pour deployer, il faut donner le droit au dossier var/www/html/ à jenkins
+
+la prod est déployé à http://localhost/mon-app_main/
+le preprod est déployé à http://localhost/mon-app_staging/
 
 
 

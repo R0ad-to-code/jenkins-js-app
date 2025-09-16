@@ -140,32 +140,26 @@ pipeline {
         }
         success {
             echo 'Pipeline exécuté avec succès!'
-            emailext (
-                subject: "Build Success: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
-                body: """
-                    Le déploiement de ${env.JOB_NAME} s'est terminé avec succès.
-                    
-                    Build: ${env.BUILD_NUMBER}
-                    Branch: ${env.BRANCH_NAME}
-                    
-                    Voir les détails: ${env.BUILD_URL}
-                """,
-                to: "${env.CHANGE_AUTHOR_EMAIL}"
+            discordSend(
+                webhookURL: 'https://discord.com/api/webhooks/1417622178496512041/CZnWIH3jW3cc-mMlMcrxoMe3EmCCZYYPPP7vdTijX1JC5Xmv4BuNVntXd-yry1G-n3wW',
+                title: "Build Réussi: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                description: "✅ Le déploiement de ${env.JOB_NAME} s'est terminé avec succès.",
+                link: env.BUILD_URL,
+                footer: "Branch: ${env.BRANCH_NAME ?: 'Non spécifiée'}",
+                result: currentBuild.currentResult,
+                image: 'https://jenkins.io/images/logos/jenkins/jenkins.png'
             )
         }
         failure {
             echo 'Le pipeline a échoué!'
-            emailext (
-                subject: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
-                body: """
-                    Le déploiement de ${env.JOB_NAME} a échoué.
-                    
-                    Build: ${env.BUILD_NUMBER}
-                    Branch: ${env.BRANCH_NAME}
-                    
-                    Voir les détails: ${env.BUILD_URL}
-                """,
-                to: "${env.CHANGE_AUTHOR_EMAIL}"
+            discordSend(
+                webhookURL: 'https://discord.com/api/webhooks/1417622178496512041/CZnWIH3jW3cc-mMlMcrxoMe3EmCCZYYPPP7vdTijX1JC5Xmv4BuNVntXd-yry1G-n3wW',
+                title: "⚠️ Build Échoué: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                description: "❌ Le déploiement de ${env.JOB_NAME} a échoué.",
+                link: env.BUILD_URL,
+                footer: "Branch: ${env.BRANCH_NAME ?: 'Non spécifiée'}",
+                result: currentBuild.currentResult,
+                image: 'https://jenkins.io/images/logos/jenkins/jenkins.png'
             )
         }
         unstable {
